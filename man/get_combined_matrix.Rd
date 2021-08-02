@@ -4,17 +4,59 @@
 \alias{get_combined_matrix}
 \title{Combine different methods' expression estimates into one expression matrix}
 \usage{
-get_combined_matrix(x, filtfun = NULL, name_sep = ".", as_data_table = F)
+get_combined_matrix(
+  x,
+  filtfun = NULL,
+  name_sep = ".",
+  as_data_table = F,
+  min_bjr = 2,
+  min_methods = 2,
+  hard_threshold = F
+)
 }
 \arguments{
 \item{x}{the list of the methods' output to be combined or the path of the
 CirComPara2's results}
 
-\item{filtfun}{a function to filter the rows in the combined matrix}
+\item{filtfun}{a function to filter the rows in the combined matrix. No
+filter is applied by default. Set "ccp2" to apply a CirComPara2-like
+filter, that is keep only circRNAs detected with at least N backspliced
+reads and by at least M methods, where N and M are defined by the
+\code{min_bjr} and \code{min_methods} parameters.}
 
 \item{name_sep}{the character(s) used to concatenate SAMPLE and METHOD names}
 
 \item{as_data_table}{if TRUE, return a data.table instead of a matrix}
+
+\item{min_bjr}{minimum amount of backspliced reads for a circRNA to be kept
+when the ccp2 filter is enabled}
+
+\item{min_methods}{minimum number of methods that commonly detected a circRNA
+to be kept. It applies to the ccp2 filter.}
+
+\item{hard_threshold}{FALSE by default, meaning that if a circRNA passes the
+  filtering in one sample, then its values in other samples are preserved
+  even when they are below the specified threshold. For instance, if
+  circRNA_x has 2 BJRs according to Method_M1 and 2 BJRs according to
+  Method_M2 in Sample_A, then it passes the filter. If, in Sample_B,
+  circRNA_x has 1 BJRs according to Method_M1 and 1 BJRs according to
+  Method_M2, it would not pass the filter, but the 1 values are kept since
+  there is some stronger evidence of expression in another sample. Set TRUE
+  to apply an hard threshold, meaning that the 1 values will be set to zeros
+  following the reasoning that if there is not enough BJRs, the circRNA is
+  not considered as being detected. Below an example of the output matrix
+  with:
+
+  \code{hard_threshold = FALSE} (the default)
+
+  \tabular{ccccc}{ circ_id \tab S_A.M_M1 \tab S_A.M_M2 \tab S_B.M_M1 \tab
+  S_B.M_M2 \cr circRNA_x \tab 2 \tab 2 \tab 1 \tab 1 }
+
+
+  or \code{hard_threshold = TRUE}
+
+  \tabular{ccccc}{ circ_id \tab S_A.M_M1 \tab S_A.M_M2 \tab S_B.M_M1 \tab
+  S_B.M_M2 \cr circRNA_x \tab 2 \tab 2 \tab 0 \tab 0 }}
 }
 \value{
 a matrix of the expression values with samples in columns and
@@ -24,5 +66,7 @@ a matrix of the expression values with samples in columns and
 Combine different methods' expression estimates into one expression matrix
 }
 \examples{
-\dontrun{mat <- get_combined_matrix(x = "/home/user/CirComPara2_analysis")}
+\dontrun{
+mat <- get_combined_matrix(x = "/home/user/CirComPara2_analysis")
+}
 }
