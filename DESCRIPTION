@@ -4,8 +4,12 @@ Title: Circular RNA Expression Analysis R Tools
 Version: 0.1.0
 Author: Enrico Gaffo
 Maintainer: Enrico Gaffo <enrico.gaffo@gmail.com>
-Description: A collection of functions to inspect and manage circular RNA 
-(circRNA) expression data from RNA-seq experiments.
-License: GNU GPLv3
+Description: A collection of functions to inspect and manage circular RNA expression data from RNA-seq experiments.
+License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
+URL: https://github.com/egaffo/CREART
+BugReports: https://github.com/egaffo/CREART/issues
+RoxygenNote: 7.1.1
+Imports:
+  data.table
