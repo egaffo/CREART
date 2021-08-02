@@ -11,7 +11,7 @@
 #' @export
 #'
 #' @examples
-#' mat <- get_combined_matrix(x = "/home/user/CirComPara2_analysis")
+#' \dontrun{mat <- get_combined_matrix(x = "/home/user/CirComPara2_analysis")}
 #' @import data.table
 get_combined_matrix <-
   function (x,
