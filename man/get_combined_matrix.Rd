@@ -11,7 +11,8 @@ get_combined_matrix(
   as_data_table = F,
   min_bjr = 2,
   min_methods = 2,
-  hard_threshold = F
+  hard_threshold = F,
+  select_methods = NULL
 )
 }
 \arguments{
@@ -58,6 +59,9 @@ to be kept. It applies to the ccp2 filter.}
 
   \tabular{ccccc}{ circ_id \tab S_A.M_M1 \tab S_A.M_M2 \tab S_B.M_M1 \tab
   S_B.M_M2 \cr circRNA_x \tab 2 \tab 2 \tab 0 \tab 0 }}
+
+\item{select_methods}{a character vector with the names of methods to keep.
+NULL to keep all methods}
 }
 \value{
 a matrix of the expression values with samples in columns and
