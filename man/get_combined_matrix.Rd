@@ -15,8 +15,9 @@ get_combined_matrix(
 )
 }
 \arguments{
-\item{x}{the list of the methods' output to be combined or the path of the
-CirComPara2's results}
+\item{x}{the list of the methods' output to be combined, or the path of the
+CirComPara2's results, or the full path to the circrnas.gtf file from the
+CirComPara's output}
 
 \item{filtfun}{a function to filter the rows in the combined matrix. No
 filter is applied by default. Set "ccp2" to apply a CirComPara2-like

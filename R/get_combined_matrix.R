@@ -1,7 +1,8 @@
 #' Combine different methods' expression estimates into one expression matrix
 #'
-#' @param x the list of the methods' output to be combined or the path of the
-#'   CirComPara2's results
+#' @param x the list of the methods' output to be combined, or the path of the
+#'   CirComPara2's results, or the full path to the circrnas.gtf file from the
+#'   CirComPara's output
 #' @param filtfun a function to filter the rows in the combined matrix. No
 #'   filter is applied by default. Set "ccp2" to apply a CirComPara2-like
 #'   filter, that is keep only circRNAs detected with at least N backspliced
@@ -48,19 +49,46 @@
 #' @import data.table
 get_combined_matrix <-
   function(x,
-            filtfun = NULL,
-            name_sep = ".",
-            as_data_table = F,
-            min_bjr = 2,
-            min_methods = 2,
-            hard_threshold = F) {
+           filtfun = NULL,
+           name_sep = ".",
+           as_data_table = F,
+           min_bjr = 2,
+           min_methods = 2,
+           hard_threshold = F) {
+
+    ## if a directory is given, then compose the path to the file according to
+    ## the CirComPara's directory structure
+    if (dir.exists(x)) {
+
+      input_file_path <-
+        file.path(x,
+                  "circular_expression",
+                  "circrna_collection",
+                  "circrnas.gtf")
+
+      ## try old CirComPara path
+      if (!file.exists(input_file_path)) {
+
+        input_file_path <-
+          file.path(x,
+                    "circular_expression",
+                    "circRNA_collection",
+                    "circrnas.gtf")
+      }
+    } else {
+
+      ## the circrnas.gtf full path was given
+      if (file.exists(x)) {
+
+        input_file_path <- x
+      } else {
+        stop(paste0(x, " does not exists or cannot be read."))
+      }
+    }
 
     ## read the file
     gtf <-
-      fread(file = file.path(x,
-                             "circular_expression",
-                             "circrna_collection",
-                             "circrnas.gtf"),
+      fread(file = input_file_path,
             header = F,
             select = c(1, 2, 4, 5, 6, 7,
                        9))[, .(Method = V2,
