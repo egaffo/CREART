@@ -14,7 +14,7 @@
 #'
 #' @examples
 #' @import data.table
-half_the_samples_filter <-
+fraction_the_samples_filter <-
   function(x, rthr = 0, frac = .5) {
     xmat <- as.matrix(data.frame(x, row.names = "circ_id"))
     x[circ_id %in%
